@@ -73,7 +73,7 @@ class AppTheme {
           color: scheme.onSurface,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         color: scheme.surfaceContainerHighest.withOpacity(0.45),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
