@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/api_config.dart';
+import '../core/app_config.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences must be overridden in main()');
@@ -17,9 +17,9 @@ class ApiClient {
   ApiClient(this._prefs) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: ApiConfig.baseUrl,
-        connectTimeout: ApiConfig.connectTimeout,
-        receiveTimeout: ApiConfig.receiveTimeout,
+        baseUrl: AppConfig.apiBaseUrl,
+        connectTimeout: AppConfig.connectTimeout,
+        receiveTimeout: AppConfig.receiveTimeout,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          final token = _prefs.getString(ApiConfig.tokenKey);
+          final token = _prefs.getString(AppConfig.tokenKey);
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -87,10 +87,10 @@ String apiErrorMessage(Object error) {
     }
     if (error.type == DioExceptionType.connectionTimeout ||
         error.type == DioExceptionType.receiveTimeout) {
-      return 'Connection timed out. Is the API running on port 4402?';
+      return 'Connection timed out. Check ${AppConfig.apiRoot}';
     }
     if (error.type == DioExceptionType.connectionError) {
-      return 'Cannot reach API at ${ApiConfig.baseUrl}';
+      return 'Cannot reach API at ${AppConfig.apiBaseUrl}';
     }
     return error.message ?? 'Network error';
   }

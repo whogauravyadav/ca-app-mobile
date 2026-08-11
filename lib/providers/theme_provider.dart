@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/api_config.dart';
+import '../core/app_config.dart';
 import '../services/api_client.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
   ThemeNotifier(this._prefs) : super(ThemeMode.system) {
-    final raw = _prefs.getString(ApiConfig.themeModeKey);
+    final raw = _prefs.getString(AppConfig.themeModeKey);
     switch (raw) {
       case 'light':
         state = ThemeMode.light;
@@ -27,7 +27,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
       ThemeMode.dark => 'dark',
       ThemeMode.system => 'system',
     };
-    await _prefs.setString(ApiConfig.themeModeKey, value);
+    await _prefs.setString(AppConfig.themeModeKey, value);
   }
 
   Future<void> toggleDark(bool enabled) async {

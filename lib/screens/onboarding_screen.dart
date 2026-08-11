@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../core/api_config.dart';
+import '../core/app_config.dart';
 import '../core/theme.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
@@ -43,7 +43,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Future<void> _finish() async {
     final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setBool(ApiConfig.onboardingKey, true);
+    await prefs.setBool(AppConfig.onboardingKey, true);
     final auth = ref.read(authProvider);
     if (auth.status == AuthStatus.authenticated ||
         auth.status == AuthStatus.guest) {

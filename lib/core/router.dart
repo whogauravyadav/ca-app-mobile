@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api_config.dart';
+import '../core/app_config.dart';
 import '../providers/auth_provider.dart';
 import '../screens/article_detail_screen.dart';
 import '../screens/bookmarks_screen.dart';
@@ -31,7 +31,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: _AuthRefresh(ref),
     redirect: (context, state) {
       final loc = state.matchedLocation;
-      final onboardingDone = prefs.getBool(ApiConfig.onboardingKey) ?? false;
+      final onboardingDone = prefs.getBool(AppConfig.onboardingKey) ?? false;
       final isSplash = loc == '/splash';
       final isOnboarding = loc == '/onboarding';
       final isAuthRoute = loc == '/login' || loc == '/register';

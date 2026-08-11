@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/api_config.dart';
+import '../core/app_config.dart';
 import '../models/models.dart';
 import 'api_client.dart';
 
@@ -20,12 +20,12 @@ class AuthService {
   final ApiClient _api;
   final SharedPreferences _prefs;
 
-  String? get token => _prefs.getString(ApiConfig.tokenKey);
+  String? get token => _prefs.getString(AppConfig.tokenKey);
 
   bool get isLoggedIn => token != null && token!.isNotEmpty;
 
   UserModel? getCachedUser() {
-    final raw = _prefs.getString(ApiConfig.userKey);
+    final raw = _prefs.getString(AppConfig.userKey);
     if (raw == null || raw.isEmpty) return null;
     try {
       return UserModel.fromJson(jsonDecode(raw) as Map<String, dynamic>);
@@ -35,13 +35,13 @@ class AuthService {
   }
 
   Future<void> _persistSession(String token, UserModel user) async {
-    await _prefs.setString(ApiConfig.tokenKey, token);
-    await _prefs.setString(ApiConfig.userKey, jsonEncode(user.toJson()));
+    await _prefs.setString(AppConfig.tokenKey, token);
+    await _prefs.setString(AppConfig.userKey, jsonEncode(user.toJson()));
   }
 
   Future<void> clearSession() async {
-    await _prefs.remove(ApiConfig.tokenKey);
-    await _prefs.remove(ApiConfig.userKey);
+    await _prefs.remove(AppConfig.tokenKey);
+    await _prefs.remove(AppConfig.userKey);
   }
 
   Future<UserModel> login({
@@ -80,7 +80,7 @@ class AuthService {
     final res = await _api.get('/profile');
     final data = res.data as Map<String, dynamic>;
     final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-    await _prefs.setString(ApiConfig.userKey, jsonEncode(user.toJson()));
+    await _prefs.setString(AppConfig.userKey, jsonEncode(user.toJson()));
     return user;
   }
 
@@ -179,7 +179,7 @@ class AuthService {
     });
     final user =
         UserModel.fromJson(res.data['data']['user'] as Map<String, dynamic>);
-    await _prefs.setString(ApiConfig.userKey, jsonEncode(user.toJson()));
+    await _prefs.setString(AppConfig.userKey, jsonEncode(user.toJson()));
     return user;
   }
 }
