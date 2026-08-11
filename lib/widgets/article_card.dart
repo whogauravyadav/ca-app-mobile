@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../core/theme.dart';
 import '../models/models.dart';
 
 class ArticleCard extends StatelessWidget {
@@ -12,38 +14,61 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final date = article.publishedAt != null
-        ? DateFormat.MMMd().format(DateTime.tryParse(article.publishedAt!) ?? DateTime.now())
+        ? DateFormat.MMMd().format(
+            DateTime.tryParse(article.publishedAt!) ?? DateTime.now(),
+          )
         : null;
 
     return Material(
-      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.4),
-      borderRadius: BorderRadius.circular(16),
+      color: Colors.white,
+      elevation: 0,
+      borderRadius: BorderRadius.circular(18),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         onTap: () => context.push('/article/${article.slug}'),
-        child: Padding(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.border),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withOpacity(0.04),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
           padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(14),
                 child: SizedBox(
-                  width: 88,
-                  height: 88,
+                  width: 92,
+                  height: 92,
                   child: article.featuredImage != null &&
                           article.featuredImage!.isNotEmpty
                       ? CachedNetworkImage(
                           imageUrl: article.featuredImage!,
                           fit: BoxFit.cover,
                           placeholder: (_, __) => Container(
-                            color: theme.colorScheme.primary.withOpacity(0.08),
+                            color: AppColors.primary.withOpacity(0.08),
+                            child: const Center(
+                              child: SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
                           ),
-                          errorWidget: (_, __, ___) => _placeholder(theme),
+                          errorWidget: (_, __, ___) => _placeholder(),
                         )
-                      : _placeholder(theme),
+                      : _placeholder(),
                 ),
               ),
               const SizedBox(width: 12),
@@ -55,51 +80,56 @@ class ArticleCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
-                          vertical: 3,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6),
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           article.category!.name,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w600,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(
                       article.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleSmall?.copyWith(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w600,
+                        fontSize: 14,
                         height: 1.3,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.schedule_rounded,
                           size: 14,
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: AppColors.textSecondary,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           '${article.readTimeMin} min',
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                         if (date != null) ...[
                           const SizedBox(width: 10),
                           Text(
                             date,
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -115,12 +145,12 @@ class ArticleCard extends StatelessWidget {
     );
   }
 
-  Widget _placeholder(ThemeData theme) {
+  Widget _placeholder() {
     return Container(
-      color: theme.colorScheme.primary.withOpacity(0.1),
-      child: Icon(
+      color: AppColors.primary.withOpacity(0.08),
+      child: const Icon(
         Icons.article_outlined,
-        color: theme.colorScheme.primary.withOpacity(0.5),
+        color: AppColors.primary,
       ),
     );
   }

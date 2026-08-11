@@ -6,20 +6,16 @@ import 'package:intl/intl.dart';
 
 import '../core/theme.dart';
 import '../providers/auth_provider.dart';
-import '../providers/theme_provider.dart';
+import '../widgets/app_buttons.dart';
+import '../widgets/notification_bell.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final auth = ref.watch(authProvider);
-    final themeMode = ref.watch(themeModeProvider);
     final user = auth.user;
-    final isDark = themeMode == ThemeMode.dark ||
-        (themeMode == ThemeMode.system &&
-            MediaQuery.platformBrightnessOf(context) == Brightness.dark);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,74 +23,143 @@ class ProfileScreen extends ConsumerWidget {
           'Profile',
           style: GoogleFonts.poppins(fontWeight: FontWeight.w700),
         ),
+        actions: const [NotificationBellButton()],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
           if (auth.status == AuthStatus.authenticated && user != null) ...[
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 36,
-                  backgroundColor: AppColors.primary.withOpacity(0.15),
-                  child: Text(
-                    user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-                    style: GoogleFonts.poppins(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 34,
+                    backgroundColor: AppColors.primary.withOpacity(0.12),
+                    child: Text(
+                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                      style: GoogleFonts.poppins(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryDark,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user.name,
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user.name,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      Text(
-                        user.email,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                        const SizedBox(height: 2),
+                        Text(
+                          user.email,
+                          style: GoogleFonts.inter(
+                            color: AppColors.textSecondary,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    ],
+                        if (user.phone != null && user.phone!.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            user.phone!,
+                            style: GoogleFonts.inter(
+                              color: AppColors.textSecondary,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.accent.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.local_fire_department_rounded,
-                        size: 18,
-                        color: Color(0xFFE65100),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${user.streakCount}',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w700,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: AppColors.accent.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.local_fire_department_rounded,
+                          size: 18,
+                          color: Color(0xFFE65100),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        Text(
+                          '${user.streakCount}',
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
+            if (user.examLabels.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Target exams',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: user.examLabels
+                          .map(
+                            (l) => Chip(
+                              label: Text(
+                                l,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.onPrimary,
+                                ),
+                              ),
+                              backgroundColor: AppColors.primary,
+                              side: BorderSide.none,
+                              visualDensity: VisualDensity.compact,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
             _SubscriptionCard(
               isAdFree: user.isAdFree,
               expiresAt: user.subscriptionExpiresAt,
@@ -103,8 +168,9 @@ class ProfileScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.4),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,53 +179,93 @@ class ProfileScreen extends ConsumerWidget {
                     'Guest mode',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Sign in to unlock bookmarks, quiz history, and streaks.',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: GoogleFonts.inter(
+                      color: AppColors.textSecondary,
+                      height: 1.4,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  FilledButton(
+                  PrimaryButton(
+                    label: 'Sign In',
                     onPressed: () => context.go('/login'),
-                    child: const Text('Sign In'),
+                    icon: Icons.login_rounded,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            _SubscriptionCard(isAdFree: false, expiresAt: null),
+            const _SubscriptionCard(isAdFree: false, expiresAt: null),
           ],
-          const SizedBox(height: 24),
-          Text('Settings', style: theme.textTheme.titleMedium),
-          const SizedBox(height: 8),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.dark_mode_outlined),
-            title: const Text('Dark mode'),
-            subtitle: Text(
-              themeMode == ThemeMode.system
-                  ? 'Following system'
-                  : (isDark ? 'On' : 'Off'),
-            ),
-            value: themeMode == ThemeMode.dark,
-            onChanged: (v) =>
-                ref.read(themeModeProvider.notifier).toggleDark(v),
-          ),
           if (auth.status == AuthStatus.authenticated) ...[
-            const Divider(),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.logout_rounded),
-              title: const Text('Log out'),
-              onTap: () async {
-                await ref.read(authProvider.notifier).logout();
-                if (context.mounted) context.go('/login');
-              },
+            const SizedBox(height: 24),
+            Text(
+              'Account',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.edit_outlined,
+                        color: AppColors.primaryDark),
+                    title: Text(
+                      'Edit profile',
+                      style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      'Name, phone & target exams',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => context.push('/edit-profile'),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.lock_outline_rounded,
+                        color: AppColors.primaryDark),
+                    title: Text(
+                      'Change password',
+                      style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    ),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => context.push('/change-password'),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.logout_rounded,
+                        color: AppColors.danger),
+                    title: Text(
+                      'Log out',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.danger,
+                      ),
+                    ),
+                    onTap: () async {
+                      await ref.read(authProvider.notifier).logout();
+                      if (context.mounted) context.go('/login');
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ],
@@ -179,7 +285,6 @@ class _SubscriptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     String? expiryLabel;
     if (expiresAt != null) {
       final dt = DateTime.tryParse(expiresAt!);
@@ -189,19 +294,14 @@ class _SubscriptionCard extends StatelessWidget {
     }
 
     return Material(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(20),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => context.push('/subscription'),
         child: Ink(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: isAdFree
-                  ? [AppColors.primaryDark, AppColors.primary]
-                  : [
-                      const Color(0xFF3E2723),
-                      const Color(0xFF5D4037),
-                    ],
+              colors: [AppColors.primaryDark, AppColors.primary],
             ),
           ),
           padding: const EdgeInsets.all(18),

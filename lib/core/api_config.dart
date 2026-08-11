@@ -12,5 +12,4 @@ class ApiConfig {
   static const String tokenKey = AppConfig.tokenKey;
   static const String userKey = AppConfig.userKey;
   static const String onboardingKey = AppConfig.onboardingKey;
-  static const String themeModeKey = AppConfig.themeModeKey;
 }

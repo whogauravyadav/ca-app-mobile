@@ -35,5 +35,4 @@ class AppConfig {
   static const String tokenKey = 'auth_token';
   static const String userKey = 'auth_user';
   static const String onboardingKey = 'onboarding_done';
-  static const String themeModeKey = 'theme_mode';
 }

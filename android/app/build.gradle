@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         applicationId "com.currentaffairs.current_affairs_app"
-        minSdk flutter.minSdkVersion
+        minSdk 23
         targetSdk flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -60,3 +60,8 @@ flutter {
 }
 
 dependencies {}
+
+// Apply only when real Firebase config is present
+if (file('google-services.json').exists()) {
+    apply plugin: 'com.google.gms.google-services'
+}

@@ -73,6 +73,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> register({
     required String name,
     required String email,
+    required String phone,
+    required List<String> exams,
     required String password,
     required String passwordConfirmation,
   }) async {
@@ -80,10 +82,49 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final user = await _auth.register(
         name: name,
         email: email,
+        phone: phone,
+        exams: exams,
         password: password,
         passwordConfirmation: passwordConfirmation,
       );
       state = AuthState(status: AuthStatus.authenticated, user: user);
+      return true;
+    } catch (e) {
+      state = state.copyWith(error: apiErrorMessage(e));
+      return false;
+    }
+  }
+
+  Future<bool> updateProfile({
+    String? name,
+    String? phone,
+    List<String>? exams,
+  }) async {
+    try {
+      final user = await _auth.updateProfile(
+        name: name,
+        phone: phone,
+        exams: exams,
+      );
+      state = AuthState(status: AuthStatus.authenticated, user: user);
+      return true;
+    } catch (e) {
+      state = state.copyWith(error: apiErrorMessage(e));
+      return false;
+    }
+  }
+
+  Future<bool> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      await _auth.changePassword(
+        currentPassword: currentPassword,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      );
       return true;
     } catch (e) {
       state = state.copyWith(error: apiErrorMessage(e));

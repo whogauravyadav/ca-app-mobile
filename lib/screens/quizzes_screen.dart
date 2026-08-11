@@ -4,10 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../core/theme.dart';
 import '../models/models.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../widgets/ad_banner_placeholder.dart';
+import '../widgets/app_buttons.dart';
+import '../widgets/notification_bell.dart';
 import '../widgets/shimmer_list.dart';
 
 class QuizzesScreen extends ConsumerStatefulWidget {
@@ -59,6 +62,7 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
           'Quizzes',
           style: GoogleFonts.poppins(fontWeight: FontWeight.w700),
         ),
+        actions: const [NotificationBellButton()],
       ),
       body: RefreshIndicator(
         onRefresh: _load,
@@ -71,12 +75,16 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
                 ? ListView(
                     children: [
                       const SizedBox(height: 120),
-                      Center(child: Text(_error!)),
-                      const SizedBox(height: 12),
+                      Center(child: Text(_error!, textAlign: TextAlign.center)),
+                      const SizedBox(height: 16),
                       Center(
-                        child: FilledButton.tonal(
-                          onPressed: _load,
-                          child: const Text('Retry'),
+                        child: SizedBox(
+                          width: 160,
+                          child: PrimaryButton(
+                            label: 'Retry',
+                            onPressed: _load,
+                            icon: Icons.refresh_rounded,
+                          ),
                         ),
                       ),
                     ],
@@ -124,13 +132,16 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
                           }
                           final quiz = _quizzes[index];
                           return Material(
-                            color: theme.colorScheme.surfaceContainerHighest
-                                .withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
                             child: InkWell(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(18),
                               onTap: () => context.push('/quiz/${quiz.id}'),
-                              child: Padding(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(color: AppColors.border),
+                                ),
                                 padding: const EdgeInsets.all(16),
                                 child: Row(
                                   children: [
@@ -138,13 +149,12 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
                                       width: 48,
                                       height: 48,
                                       decoration: BoxDecoration(
-                                        color: theme.colorScheme.primary
-                                            .withOpacity(0.12),
+                                        color: AppColors.primary.withOpacity(0.12),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.quiz_rounded,
-                                        color: theme.colorScheme.primary,
+                                        color: AppColors.primary,
                                       ),
                                     ),
                                     const SizedBox(width: 14),
@@ -157,7 +167,7 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
                                             quiz.title,
                                             style: theme.textTheme.titleSmall
                                                 ?.copyWith(
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w700,
                                             ),
                                           ),
                                           const SizedBox(height: 4),
@@ -172,14 +182,16 @@ class _QuizzesScreenState extends ConsumerState<QuizzesScreen> {
                                             ].where((e) => e.isNotEmpty).join(' · '),
                                             style: theme.textTheme.labelMedium
                                                 ?.copyWith(
-                                              color: theme
-                                                  .colorScheme.onSurfaceVariant,
+                                              color: AppColors.textSecondary,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    const Icon(Icons.chevron_right_rounded),
+                                    const Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: AppColors.primary,
+                                    ),
                                   ],
                                 ),
                               ),

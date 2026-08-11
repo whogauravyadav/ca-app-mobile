@@ -11,6 +11,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../widgets/ad_banner_placeholder.dart';
+import '../widgets/app_buttons.dart';
 
 class ArticleDetailScreen extends ConsumerStatefulWidget {
   const ArticleDetailScreen({super.key, required this.slug});
@@ -103,7 +104,7 @@ class _ArticleDetailScreenState extends ConsumerState<ArticleDetailScreen> {
 
     if (_loading) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: AppLoader(message: 'Loading article...'),
       );
     }
 
@@ -118,7 +119,7 @@ class _ArticleDetailScreenState extends ConsumerState<ArticleDetailScreen> {
               children: [
                 Text(_error ?? 'Article not found'),
                 const SizedBox(height: 12),
-                FilledButton(onPressed: _load, child: const Text('Retry')),
+                SizedBox(width: 160, child: PrimaryButton(label: 'Retry', onPressed: _load, icon: Icons.refresh_rounded)),
               ],
             ),
           ),

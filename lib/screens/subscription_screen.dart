@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../core/theme.dart';
+import '../widgets/app_buttons.dart';
 import '../models/models.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
@@ -105,7 +106,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                     children: [
                       Text(_error!),
                       const SizedBox(height: 12),
-                      FilledButton.tonal(
+                      FilledButton(
                         onPressed: _load,
                         child: const Text('Retry'),
                       ),
@@ -224,13 +225,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                                     onPressed:
                                         activating ? null : () => _activate(plan),
                                     child: activating
-                                        ? const SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          )
+                                        ? const ButtonLoader()
                                         : Text(
                                             isAdFree
                                                 ? 'Extend with ${plan.name}'

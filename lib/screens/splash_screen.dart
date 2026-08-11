@@ -72,12 +72,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   curve: Curves.easeOutBack,
                 ),
             const Spacer(flex: 2),
-            const SizedBox(
+            SizedBox(
               width: 28,
               height: 28,
-              child: CircularProgressIndicator(
+              child: const CircularProgressIndicator(
                 strokeWidth: 2.5,
-                color: Color(0xFF5C9CE6),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5C9CE6)),
               ),
             ).animate().fadeIn(delay: 800.ms),
             const SizedBox(height: 36),

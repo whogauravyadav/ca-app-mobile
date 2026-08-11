@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../core/theme.dart';
+
 class ShimmerList extends StatelessWidget {
   const ShimmerList({super.key, this.itemCount = 5});
 
@@ -8,26 +10,24 @@ class ShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = Theme.of(context).colorScheme.surfaceContainerHighest;
-    final highlight = Theme.of(context).colorScheme.surface;
-
     return Shimmer.fromColors(
-      baseColor: base,
-      highlightColor: highlight,
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: itemCount,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          return Container(
-            height: 104,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+      baseColor: const Color(0xFFE8ECF5),
+      highlightColor: const Color(0xFFF7F9FC),
+      child: Column(
+        children: List.generate(
+          itemCount,
+          (index) => Padding(
+            padding: EdgeInsets.only(bottom: index == itemCount - 1 ? 0 : 12),
+            child: Container(
+              height: 116,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.border),
+              ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -38,17 +38,14 @@ class ShimmerHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = Theme.of(context).colorScheme.surfaceContainerHighest;
-    final highlight = Theme.of(context).colorScheme.surface;
-
     return Shimmer.fromColors(
-      baseColor: base,
-      highlightColor: highlight,
+      baseColor: const Color(0xFFE8ECF5),
+      highlightColor: const Color(0xFFF7F9FC),
       child: Container(
-        height: 180,
+        height: 190,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
         ),
       ),
     );

@@ -6,9 +6,12 @@ import '../core/app_config.dart';
 import '../providers/auth_provider.dart';
 import '../screens/article_detail_screen.dart';
 import '../screens/bookmarks_screen.dart';
+import '../screens/change_password_screen.dart';
+import '../screens/edit_profile_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/main_shell.dart';
+import '../screens/notifications_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/quiz_take_screen.dart';
@@ -128,6 +131,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/subscription',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SubscriptionScreen(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/edit-profile',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/change-password',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const ChangePasswordScreen(),
       ),
     ],
   );

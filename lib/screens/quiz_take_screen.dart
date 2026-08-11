@@ -12,6 +12,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../widgets/ad_banner_placeholder.dart';
+import '../widgets/app_buttons.dart';
 
 class QuizTakeScreen extends ConsumerStatefulWidget {
   const QuizTakeScreen({super.key, required this.quizId});
@@ -119,7 +120,7 @@ class _QuizTakeScreenState extends ConsumerState<QuizTakeScreen> {
   Widget build(BuildContext context) {
     if (_loading) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: AppLoader(message: 'Loading quiz...'),
       );
     }
     if (_error != null || _quiz == null) {
@@ -131,7 +132,7 @@ class _QuizTakeScreenState extends ConsumerState<QuizTakeScreen> {
             children: [
               Text(_error ?? 'Quiz not found'),
               const SizedBox(height: 12),
-              FilledButton(onPressed: _load, child: const Text('Retry')),
+              SizedBox(width: 160, child: PrimaryButton(label: 'Retry', onPressed: _load, icon: Icons.refresh_rounded)),
             ],
           ),
         ),
@@ -266,13 +267,7 @@ class _QuizTakeScreenState extends ConsumerState<QuizTakeScreen> {
                                   }
                                 },
                           child: _submitting
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
+                              ? const ButtonLoader()
                               : Text(
                                   _index < quiz.questions.length - 1
                                       ? 'Next'

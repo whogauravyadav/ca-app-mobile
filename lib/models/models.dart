@@ -3,6 +3,9 @@ class UserModel {
     required this.id,
     required this.name,
     required this.email,
+    this.phone,
+    this.exams = const [],
+    this.examLabels = const [],
     this.role = 'student',
     this.subscriptionStatus = 'free',
     this.subscriptionExpiresAt,
@@ -14,6 +17,9 @@ class UserModel {
   final int id;
   final String name;
   final String email;
+  final String? phone;
+  final List<String> exams;
+  final List<String> examLabels;
   final String role;
   final String subscriptionStatus;
   final String? subscriptionExpiresAt;
@@ -22,10 +28,19 @@ class UserModel {
   final bool isAdFree;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final examsRaw = json['exams'];
+    final labelsRaw = json['exam_labels'];
     return UserModel(
       id: json['id'] as int,
       name: json['name'] as String? ?? '',
       email: json['email'] as String? ?? '',
+      phone: json['phone'] as String?,
+      exams: examsRaw is List
+          ? examsRaw.map((e) => e.toString()).toList()
+          : const [],
+      examLabels: labelsRaw is List
+          ? labelsRaw.map((e) => e.toString()).toList()
+          : const [],
       role: json['role'] as String? ?? 'student',
       subscriptionStatus: json['subscription_status'] as String? ?? 'free',
       subscriptionExpiresAt: json['subscription_expires_at'] as String?,
@@ -39,6 +54,9 @@ class UserModel {
         'id': id,
         'name': name,
         'email': email,
+        'phone': phone,
+        'exams': exams,
+        'exam_labels': examLabels,
         'role': role,
         'subscription_status': subscriptionStatus,
         'subscription_expires_at': subscriptionExpiresAt,
@@ -49,6 +67,9 @@ class UserModel {
 
   UserModel copyWith({
     String? name,
+    String? phone,
+    List<String>? exams,
+    List<String>? examLabels,
     String? subscriptionStatus,
     String? subscriptionExpiresAt,
     int? streakCount,
@@ -59,6 +80,9 @@ class UserModel {
       id: id,
       name: name ?? this.name,
       email: email,
+      phone: phone ?? this.phone,
+      exams: exams ?? this.exams,
+      examLabels: examLabels ?? this.examLabels,
       role: role,
       subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
       subscriptionExpiresAt: subscriptionExpiresAt ?? this.subscriptionExpiresAt,
@@ -346,6 +370,65 @@ class BookmarkModel {
           ? ArticleModel.fromJson(json['article'] as Map<String, dynamic>)
           : null,
       createdAt: json['created_at'] as String?,
+    );
+  }
+}
+
+class AppNotificationModel {
+  const AppNotificationModel({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.type,
+    this.data = const {},
+    this.isRead = false,
+    this.createdAt,
+  });
+
+  final int id;
+  final String title;
+  final String body;
+  final String type;
+  final Map<String, dynamic> data;
+  final bool isRead;
+  final String? createdAt;
+
+  String? get route {
+    final r = data['route'];
+    if (r is String && r.isNotEmpty) return r;
+    if (type == 'article' && data['slug'] != null) {
+      return '/article/${data['slug']}';
+    }
+    if (type == 'quiz' && data['quiz_id'] != null) {
+      return '/quiz/${data['quiz_id']}';
+    }
+    return null;
+  }
+
+  factory AppNotificationModel.fromJson(Map<String, dynamic> json) {
+    final rawData = json['data'];
+    return AppNotificationModel(
+      id: json['id'] as int,
+      title: json['title'] as String? ?? '',
+      body: json['body'] as String? ?? '',
+      type: json['type'] as String? ?? 'custom',
+      data: rawData is Map<String, dynamic>
+          ? rawData
+          : <String, dynamic>{},
+      isRead: json['is_read'] as bool? ?? false,
+      createdAt: json['created_at'] as String?,
+    );
+  }
+
+  AppNotificationModel copyWith({bool? isRead}) {
+    return AppNotificationModel(
+      id: id,
+      title: title,
+      body: body,
+      type: type,
+      data: data,
+      isRead: isRead ?? this.isRead,
+      createdAt: createdAt,
     );
   }
 }

@@ -61,12 +61,16 @@ class AuthService {
   Future<UserModel> register({
     required String name,
     required String email,
+    required String phone,
+    required List<String> exams,
     required String password,
     required String passwordConfirmation,
   }) async {
     final res = await _api.post('/register', data: {
       'name': name,
       'email': email,
+      'phone': phone,
+      'exams': exams,
       'password': password,
       'password_confirmation': passwordConfirmation,
     });
@@ -181,5 +185,54 @@ class AuthService {
         UserModel.fromJson(res.data['data']['user'] as Map<String, dynamic>);
     await _prefs.setString(AppConfig.userKey, jsonEncode(user.toJson()));
     return user;
+  }
+
+  Future<List<AppNotificationModel>> getNotifications() async {
+    final res = await _api.get('/notifications');
+    final list = (res.data['data'] as List<dynamic>?) ?? [];
+    return list
+        .map((e) => AppNotificationModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<int> getUnreadNotificationCount() async {
+    final res = await _api.get('/notifications/unread-count');
+    final data = res.data['data'] as Map<String, dynamic>?;
+    return (data?['unread'] as num?)?.toInt() ?? 0;
+  }
+
+  Future<void> markNotificationRead(int id) async {
+    await _api.post('/notifications/$id/read');
+  }
+
+  Future<void> markAllNotificationsRead() async {
+    await _api.post('/notifications/read-all');
+  }
+
+  Future<UserModel> updateProfile({
+    String? name,
+    String? phone,
+    List<String>? exams,
+  }) async {
+    final res = await _api.patch('/profile', data: {
+      if (name != null) 'name': name,
+      if (phone != null) 'phone': phone,
+      if (exams != null) 'exams': exams,
+    });
+    final user = UserModel.fromJson(res.data['user'] as Map<String, dynamic>);
+    await _prefs.setString(AppConfig.userKey, jsonEncode(user.toJson()));
+    return user;
+  }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    await _api.post('/profile/password', data: {
+      'current_password': currentPassword,
+      'password': password,
+      'password_confirmation': passwordConfirmation,
+    });
   }
 }

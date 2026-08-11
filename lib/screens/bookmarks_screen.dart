@@ -7,7 +7,9 @@ import '../models/models.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
+import '../widgets/app_buttons.dart';
 import '../widgets/article_card.dart';
+import '../widgets/notification_bell.dart';
 import '../widgets/shimmer_list.dart';
 
 class BookmarksScreen extends ConsumerStatefulWidget {
@@ -87,6 +89,7 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
           'Bookmarks',
           style: GoogleFonts.poppins(fontWeight: FontWeight.w700),
         ),
+        actions: const [NotificationBellButton()],
       ),
       body: auth.status != AuthStatus.authenticated
           ? Center(
@@ -111,9 +114,10 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    FilledButton(
+                    PrimaryButton(
+                      label: 'Sign In',
                       onPressed: () => context.go('/login'),
-                      child: const Text('Sign In'),
+                      icon: Icons.login_rounded,
                     ),
                   ],
                 ),
@@ -130,11 +134,16 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                       ? ListView(
                           children: [
                             const SizedBox(height: 120),
-                            Center(child: Text(_error!)),
+                            Center(child: Text(_error!, textAlign: TextAlign.center)),
+                            const SizedBox(height: 12),
                             Center(
-                              child: TextButton(
-                                onPressed: _load,
-                                child: const Text('Retry'),
+                              child: SizedBox(
+                                width: 160,
+                                child: PrimaryButton(
+                                  label: 'Retry',
+                                  onPressed: _load,
+                                  icon: Icons.refresh_rounded,
+                                ),
                               ),
                             ),
                           ],

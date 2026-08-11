@@ -10,8 +10,10 @@ import '../models/models.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../widgets/ad_banner_placeholder.dart';
+import '../widgets/app_buttons.dart';
 import '../widgets/article_card.dart';
 import '../widgets/category_chips.dart';
+import '../widgets/notification_bell.dart';
 import '../widgets/shimmer_list.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -103,20 +105,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Current Affairs',
+                    'Daily Current Affairs',
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   Text(
                     'Stay exam-ready every day',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],
               ),
+              actions: const [
+                NotificationBellButton(),
+                SizedBox(width: 4),
+              ],
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -350,13 +358,17 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.cloud_off_rounded, size: 48),
+            const Icon(Icons.cloud_off_rounded, size: 48, color: AppColors.primary),
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            FilledButton.tonal(
-              onPressed: onRetry,
-              child: const Text('Retry'),
+            SizedBox(
+              width: 160,
+              child: PrimaryButton(
+                label: 'Retry',
+                onPressed: onRetry,
+                icon: Icons.refresh_rounded,
+              ),
             ),
           ],
         ),
