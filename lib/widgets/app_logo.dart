@@ -8,17 +8,19 @@ class AppLogo extends StatelessWidget {
     super.key,
     this.height = 160,
     this.width,
-    this.showShadow = true,
+    this.showShadow = false,
+    this.asset,
   });
 
   final double height;
   final double? width;
   final bool showShadow;
+  final String? asset;
 
   @override
   Widget build(BuildContext context) {
     final image = Image.asset(
-      AppConfig.logoAsset,
+      asset ?? AppConfig.logoAsset,
       height: height,
       width: width,
       fit: BoxFit.contain,

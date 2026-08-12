@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../core/app_config.dart';
 import '../core/theme.dart';
 import '../models/models.dart';
 import '../services/api_client.dart';
@@ -103,12 +104,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             SliverAppBar(
               floating: true,
               titleSpacing: 8,
-              leadingWidth: 64,
+              leadingWidth: 56,
               leading: const Padding(
-                padding: EdgeInsets.only(left: 12),
+                padding: EdgeInsets.only(left: 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: AppLogo(height: 44, showShadow: false),
+                  child: AppLogo(
+                    height: 40,
+                    showShadow: false,
+                    asset: AppConfig.logoMarkAsset,
+                  ),
                 ),
               ),
               title: Column(

@@ -26,6 +26,7 @@ class AppConfig {
   static const String appName = 'Daily Current Affairs';
   static const String appTagline = 'Govt Exams';
   static const String logoAsset = 'assets/images/app_logo.png';
+  static const String logoMarkAsset = 'assets/images/app_logo_mark.png';
   static const String iconAsset = 'assets/images/app_icon.png';
 
   // ── Timeouts / storage keys ──────────────────────────────────────────────
