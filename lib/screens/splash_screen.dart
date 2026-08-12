@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/app_config.dart';
+import '../core/theme.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../widgets/app_logo.dart';
@@ -57,31 +58,39 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(flex: 2),
-            const AppLogo(height: 220)
-                .animate()
-                .fadeIn(duration: 600.ms)
-                .scale(
-                  begin: const Offset(0.88, 0.88),
-                  end: const Offset(1, 1),
-                  duration: 900.ms,
-                  curve: Curves.easeOutBack,
-                ),
-            const Spacer(flex: 2),
-            SizedBox(
-              width: 28,
-              height: 28,
-              child: const CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5C9CE6)),
+        child: SizedBox.expand(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Spacer(flex: 2),
+              Center(
+                child: const AppLogo(height: 220, showShadow: false)
+                    .animate()
+                    .fadeIn(duration: 600.ms)
+                    .scale(
+                      begin: const Offset(0.88, 0.88),
+                      end: const Offset(1, 1),
+                      duration: 900.ms,
+                      curve: Curves.easeOutBack,
+                    ),
               ),
-            ).animate().fadeIn(delay: 800.ms),
-            const SizedBox(height: 36),
-          ],
+              const Spacer(flex: 2),
+              Center(
+                child: SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(AppColors.primaryDark),
+                  ),
+                ).animate().fadeIn(delay: 800.ms),
+              ),
+              const SizedBox(height: 36),
+            ],
+          ),
         ),
       ),
     );

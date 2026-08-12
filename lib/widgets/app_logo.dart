@@ -23,23 +23,25 @@ class AppLogo extends StatelessWidget {
       errorBuilder: (_, __, ___) => Icon(
         Icons.menu_book_rounded,
         size: height * 0.45,
-        color: Colors.white,
+        color: const Color(0xFF6B86F0),
       ),
     );
 
-    if (!showShadow) return image;
+    if (!showShadow) return Center(child: image);
 
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.35),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
-          ),
-        ],
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF6B86F0).withOpacity(0.18),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: image,
       ),
-      child: image,
     );
   }
 }
