@@ -28,6 +28,8 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
+        // Required by flutter_local_notifications
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -46,6 +48,7 @@ android {
         targetSdk flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -59,7 +62,9 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+}
 
 // Apply only when real Firebase config is present
 if (file('google-services.json').exists()) {
