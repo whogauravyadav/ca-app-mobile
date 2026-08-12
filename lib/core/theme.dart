@@ -174,10 +174,6 @@ class AppTheme {
         contentTextStyle: GoogleFonts.inter(color: Colors.white),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      refreshIndicatorTheme: const RefreshIndicatorThemeData(
-        color: AppColors.primaryDark,
-        backgroundColor: Colors.white,
-      ),
     );
   }
 }
