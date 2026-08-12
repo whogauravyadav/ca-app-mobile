@@ -76,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const AppLogo(height: 120, showShadow: false)
+                    const AppLogo(height: 160, width: 280, showShadow: false)
                         .animate()
                         .fadeIn(duration: 500.ms)
                         .scale(

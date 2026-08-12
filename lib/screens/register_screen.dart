@@ -116,7 +116,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const AppLogo(height: 88, showShadow: false)
+                          const AppLogo(height: 140, width: 260, showShadow: false)
                               .animate()
                               .fadeIn(duration: 450.ms)
                               .scale(

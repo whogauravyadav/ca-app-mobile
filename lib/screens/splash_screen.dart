@@ -66,7 +66,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             children: [
               const Spacer(flex: 2),
               Center(
-                child: const AppLogo(height: 260, showShadow: false)
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final size = MediaQuery.sizeOf(context);
+                      final logoH = (size.height * 0.36).clamp(200.0, 300.0);
+                      return AppLogo(
+                        height: logoH,
+                        width: constraints.maxWidth,
+                        showShadow: false,
+                      );
+                    },
+                  ),
+                )
                     .animate()
                     .fadeIn(duration: 600.ms)
                     .scale(

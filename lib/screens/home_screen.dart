@@ -103,35 +103,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           slivers: [
             SliverAppBar(
               floating: true,
-              titleSpacing: 8,
-              leadingWidth: 56,
-              leading: const Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: AppLogo(
-                    height: 40,
+              clipBehavior: Clip.none,
+              toolbarHeight: 72,
+              titleSpacing: 0,
+              automaticallyImplyLeading: false,
+              title: Row(
+                children: [
+                  const SizedBox(width: 12),
+                  const AppLogo(
+                    height: 52,
+                    width: 52,
                     showShadow: false,
                     asset: AppConfig.logoMarkAsset,
                   ),
-                ),
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Daily Current Affairs',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  Text(
-                    'Stay exam-ready every day',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Daily Current Affairs',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          'Stay exam-ready every day',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

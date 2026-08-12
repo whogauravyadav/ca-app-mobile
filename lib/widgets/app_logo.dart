@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/app_config.dart';
 
-/// Reusable brand logo for splash, auth, home app bar, and empty states.
+/// Brand logo. Always uses [BoxFit.contain] so the full artwork is visible.
 class AppLogo extends StatelessWidget {
   const AppLogo({
     super.key,
@@ -22,8 +22,9 @@ class AppLogo extends StatelessWidget {
     final image = Image.asset(
       asset ?? AppConfig.logoAsset,
       height: height,
-      width: width,
+      width: width ?? height,
       fit: BoxFit.contain,
+      alignment: Alignment.center,
       filterQuality: FilterQuality.high,
       errorBuilder: (_, __, ___) => Icon(
         Icons.menu_book_rounded,
