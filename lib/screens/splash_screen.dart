@@ -66,7 +66,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             children: [
               const Spacer(flex: 2),
               Center(
-                child: const AppLogo(height: 220, showShadow: false)
+                child: const AppLogo(height: 260, showShadow: false)
                     .animate()
                     .fadeIn(duration: 600.ms)
                     .scale(

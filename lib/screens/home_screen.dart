@@ -11,6 +11,7 @@ import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../widgets/ad_banner_placeholder.dart';
 import '../widgets/app_buttons.dart';
+import '../widgets/app_logo.dart';
 import '../widgets/article_card.dart';
 import '../widgets/category_chips.dart';
 import '../widgets/notification_bell.dart';
@@ -101,6 +102,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           slivers: [
             SliverAppBar(
               floating: true,
+              titleSpacing: 8,
+              leadingWidth: 64,
+              leading: const Padding(
+                padding: EdgeInsets.only(left: 12),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: AppLogo(height: 44, showShadow: false),
+                ),
+              ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -108,7 +118,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     'Daily Current Affairs',
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                      fontSize: 18,
                       color: AppColors.textPrimary,
                     ),
                   ),
